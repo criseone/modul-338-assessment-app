@@ -209,6 +209,15 @@ All data is automatically saved to localStorage. Your work persists across brows
 ### Responsive Design
 Works on desktop, tablet, and mobile devices with adaptive layouts.
 
+## Screenshots
+
+### Easy Assessment
+<img width="1624" height="1060" alt="Screenshot 2025-11-27 at 22 48 47" src="https://github.com/user-attachments/assets/32815561-a71e-4f60-b1fc-cd125844e950" />
+
+### Automatic Grading
+<img width="1624" height="1060" alt="Screenshot 2025-11-27 at 22 50 30" src="https://github.com/user-attachments/assets/186f911a-cad9-4e50-bfeb-38ae2c105f13" />
+
+
 ## Contributing
 
 This is an educational assessment tool for Modul 338. Customize as needed for your specific requirements.
