@@ -1,8 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import { Student } from '@/types';
 import { ASSESSMENT_ITEMS, SKILL_MATRIX, KOMPETENZBAND_NAMES, KOMPETENZBAND_COLORS, PHASE_COLORS } from '@/lib/constants';
 import { calculateKompetenzbandAverages, calculateSwissGrade } from '@/lib/utils';
+import { generateStudentPDF } from '@/lib/pdfExport';
 
 interface Props {
   student: Student | null;
@@ -11,6 +13,8 @@ interface Props {
 }
 
 export default function IndividualGrading({ student, onUpdateGrade, onUpdateComment }: Props) {
+  const [isExporting, setIsExporting] = useState(false);
+
   if (!student) {
     return (
       <div>
@@ -36,10 +40,47 @@ export default function IndividualGrading({ student, onUpdateGrade, onUpdateComm
     }
   };
 
+  const handlePdfExport = async () => {
+    setIsExporting(true);
+    try {
+      await generateStudentPDF(student);
+    } catch (error) {
+      console.error('PDF export error:', error);
+      alert('Fehler beim Erstellen des PDF: ' + (error as Error).message);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   return (
     <div>
-      <h2 className="text-2xl font-semibold mb-2 text-gray-800">Bewertung</h2>
-      <h3 className="text-blue-600 text-xl font-semibold mb-6">{student.name}</h3>
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h2 className="text-2xl font-semibold mb-2 text-gray-800">Bewertung</h2>
+          <h3 className="text-blue-600 text-xl font-semibold">{student.name}</h3>
+        </div>
+        <button
+          onClick={handlePdfExport}
+          disabled={isExporting}
+          className="px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-800 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-purple-900 transition-all hover:-translate-y-0.5 shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+        >
+          {isExporting ? 'Generiere PDF...' : 'PDF Export'}
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
+          </svg>
+        </button>
+      </div>
 
       {/* Deliverables Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">

@@ -63,7 +63,7 @@ export function calculateSwissGrade(student: Student): number | null {
   const average = sum / validBandAverages.length;
 
   // Direct 1:1 mapping - grades are already in Swiss 1-6 scale
-  return parseFloat(average.toFixed(1));
+  return parseFloat(average.toFixed(2));
 }
 
 export function cn(...classes: (string | boolean | undefined)[]): string {
